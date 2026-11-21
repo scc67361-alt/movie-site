@@ -8,7 +8,8 @@ const SECTIONS = {
   home:    {title:"الأكثر شعبية",  kind:"movie", path:"/movie/popular"},
   foreign: {title:"أفلام أجنبي",   kind:"movie", path:"/discover/movie", params:{with_original_language:"en", sort_by:"popularity.desc"}},
   arabic:  {title:"أفلام عربي",    kind:"movie", path:"/discover/movie", params:{with_original_language:"ar", sort_by:"popularity.desc"}},
-  series:  {title:"مسلسلات",       kind:"tv",    path:"/tv/popular"}
+  series:  {title:"مسلسلات",       kind:"tv",    path:"/tv/popular"},
+  mine:    {title:"أفلامنا",        kind:"movie", local:true}
 };
 const fallback = [
   {id:1,title:"فيلم تجريبي 1",release_date:"2024-01-01",vote_average:8.1,overview:"أضف مفتاح TMDB في config.js لعرض أفلام حقيقية.",poster_path:null},
@@ -24,11 +25,33 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;
 const name = m => m.title || m.name || "";
 const year = m => (m.release_date || m.first_air_date || "").slice(0,4) || "—";
 const kind = () => SECTIONS[section].kind;
-const poster = m => m.poster_path
+const mine = () => (typeof MY_MOVIES !== "undefined" ? MY_MOVIES : []).map((m,i) => ({
+  id:"my"+i, title:m.title, release_date:String(m.year||""), overview:m.desc||"", poster_path:null,
+  poster_url:m.poster||"", video:m.video||"", vote_average:0, own:true
+}));
+function playerHtml(url){
+  url = (url||"").trim();
+  let m;
+  if((m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/)))
+    return `<iframe src="https://www.youtube.com/embed/${m[1]}" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  if((m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)))
+    return `<iframe src="https://player.vimeo.com/video/${m[1]}" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  if((m = url.match(/drive\.google\.com\/file\/d\/([\w-]+)/)))
+    return `<iframe src="https://drive.google.com/file/d/${m[1]}/preview" allow="fullscreen" allowfullscreen></iframe>`;
+  if(/\.(mp4|webm|ogg)(\?|$)/i.test(url))
+    return `<video src="${esc(url)}" controls playsinline></video>`;
+  if(/^https:\/\//.test(url)) return `<iframe src="${esc(url)}" allow="fullscreen" allowfullscreen></iframe>`;
+  return `<p class="empty">لا يوجد رابط فيديو لهذا الفيلم.</p>`;
+}
+const poster = m => m.poster_url
+  ? `<img class="poster" loading="lazy" src="${esc(m.poster_url)}" alt="${esc(name(m))}">`
+  : m.poster_path
   ? `<img class="poster" loading="lazy" src="${IMG+m.poster_path}" alt="${esc(name(m))}">`
   : `<div class="poster">${esc(name(m))}</div>`;
 
 function renderFilters(){
+  $("filters").hidden = !!SECTIONS[section].local;
+  if(SECTIONS[section].local){ $("filters").innerHTML = ""; return; }
   const all = [{id:0,name:"الكل"}, ...genresByKind[kind()]];
   $("filters").innerHTML = all.map(x =>
     `<button class="chip ${x.id===genre?"on":""}" data-g="${x.id}">${esc(x.name)}</button>`).join("");
@@ -50,6 +73,13 @@ function renderHero(m){
     <button class="btn" data-id="${m.id}" data-k="${m.media_type || kind()}">التفاصيل</button>`;
 }
 async function load(){
+  if(SECTIONS[section].local){
+    items = mine(); query = ""; $("sectionTitle").textContent = SECTIONS[section].title;
+    $("hero").innerHTML = ""; $("hero").style.removeProperty("--hero");
+    renderGrid();
+    $("empty").textContent = "لا توجد أفلام بعد. أضف أفلامك في ملف movies.js.";
+    return;
+  }
   if(!TMDB_API_KEY){ items = fallback; renderHero(items[0]); renderGrid(); return; }
   const s = SECTIONS[section];
   try{
@@ -65,6 +95,14 @@ async function load(){
 }
 async function openItem(id, k){
   let m = items.find(x => x.id == id) || {};
+  if(m.own){
+    $("details").innerHTML = `<h2>${esc(name(m))}</h2>
+      <p class="meta">${esc(year(m))}</p>
+      <div class="player">${playerHtml(m.video)}</div>
+      <p>${esc(m.overview)}</p>`;
+    $("modal").hidden = false;
+    return;
+  }
   if(TMDB_API_KEY){
     try{ m = await get(`/${k}/${id}`,{append_to_response:"videos"}); }catch(e){}
   }
