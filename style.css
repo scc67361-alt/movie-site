@@ -1,9 +1,13 @@
 :root{--bg:#0e0f14;--card:#181a22;--text:#f2f2f5;--muted:#9aa0b0;--accent:#e50914}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--text);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.6}
-.top{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px 24px;background:#000;position:sticky;top:0;z-index:5}
-.logo{color:var(--accent);font-size:1.5rem}
-#search{padding:10px 14px;border-radius:8px;border:1px solid #333;background:#15161c;color:var(--text);width:min(320px,55vw);font:inherit}
+.top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:14px 24px;background:#000;position:sticky;top:0;z-index:5}
+.logo{font-family:"Bebas Neue",Impact,"Arial Narrow",sans-serif;color:var(--accent);font-size:2rem;letter-spacing:2px;text-decoration:none;text-shadow:0 2px 10px #e5091455;direction:ltr}
+.menu{display:flex;gap:6px;flex:1;margin-inline-start:16px;overflow-x:auto}
+.tab{background:none;border:0;color:#ccc;padding:8px 12px;font:inherit;cursor:pointer;white-space:nowrap;border-radius:6px}
+.tab:hover{color:#fff}
+.tab.on{color:#fff;font-weight:700;background:#ffffff1a}
+#search{padding:10px 14px;border-radius:8px;border:1px solid #333;background:#15161c;color:var(--text);width:min(260px,100%);font:inherit}
 .hero{min-height:300px;padding:48px 24px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;background:linear-gradient(0deg,var(--bg),transparent),var(--hero,#333)}
 .hero h2{font-size:2.2rem}
 .hero p{max-width:560px;color:#ddd}

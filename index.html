@@ -3,13 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>سينما - موقع الأفلام</title>
+<title>CINEMA X</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="top">
-  <h1 class="logo">🎬 سينما</h1>
-  <input id="search" type="search" placeholder="ابحث عن فيلم...">
+  <a class="logo" href="./" aria-label="CINEMA X">CINEMA X</a>
+  <nav class="menu" id="menu">
+    <button class="tab on" data-s="home">الرئيسية</button>
+    <button class="tab" data-s="foreign">أفلام أجنبي</button>
+    <button class="tab" data-s="arabic">أفلام عربي</button>
+    <button class="tab" data-s="series">مسلسلات</button>
+  </nav>
+  <input id="search" type="search" placeholder="ابحث عن فيلم أو مسلسل...">
 </header>
 
 <section class="hero" id="hero"></section>
@@ -17,7 +25,7 @@
 <nav class="filters" id="filters"></nav>
 
 <main>
-  <h2 id="sectionTitle">كل الأفلام</h2>
+  <h2 id="sectionTitle">الأكثر شعبية</h2>
   <div class="grid" id="grid"></div>
   <p id="empty" class="empty" hidden>لا توجد نتائج.</p>
 </main>
@@ -29,7 +37,7 @@
   </div>
 </div>
 
-<footer>© 2026 سينما — جميع الحقوق محفوظة</footer>
+<footer>© 2026 CINEMA X — البيانات والصور من TMDB</footer>
 <script src="config.js"></script>
 <script src="app.js"></script>
 </body>
