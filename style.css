@@ -1,0 +1,31 @@
+:root{--bg:#0e0f14;--card:#181a22;--text:#f2f2f5;--muted:#9aa0b0;--accent:#e50914}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.6}
+.top{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px 24px;background:#000;position:sticky;top:0;z-index:5}
+.logo{color:var(--accent);font-size:1.5rem}
+#search{padding:10px 14px;border-radius:8px;border:1px solid #333;background:#15161c;color:var(--text);width:min(320px,55vw);font:inherit}
+.hero{min-height:300px;padding:48px 24px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;background:linear-gradient(0deg,var(--bg),transparent),var(--hero,#333)}
+.hero h2{font-size:2.2rem}
+.hero p{max-width:560px;color:#ddd}
+.btn{align-self:flex-start;background:var(--accent);color:#fff;border:0;padding:10px 22px;border-radius:8px;font:inherit;cursor:pointer}
+.filters{display:flex;gap:8px;flex-wrap:wrap;padding:20px 24px 0}
+.chip{background:var(--card);color:var(--text);border:1px solid #2a2d38;padding:6px 16px;border-radius:999px;cursor:pointer;font:inherit}
+.chip.on{background:var(--accent);border-color:var(--accent)}
+main{padding:20px 24px}
+main h2{margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px}
+.card{background:var(--card);border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .15s}
+.card:hover{transform:translateY(-4px)}
+.poster{width:100%;object-fit:cover;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;font-weight:700;font-size:1.1rem;background:var(--g)}
+.info{padding:10px}
+.info b{display:block;font-size:.95rem}
+.info span{color:var(--muted);font-size:.85rem}
+.empty{color:var(--muted)}
+.modal{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modal[hidden]{display:none}
+.modal-box{background:var(--card);border-radius:12px;max-width:640px;width:100%;max-height:90vh;overflow:auto;padding:24px;position:relative}
+.close{position:absolute;top:12px;left:12px;background:none;border:0;color:var(--text);font-size:1.3rem;cursor:pointer}
+.meta{color:var(--muted);margin:6px 0 12px}
+.rate{color:#f5c518}
+footer{text-align:center;color:var(--muted);padding:30px}
+img.poster{padding:0;display:block}
